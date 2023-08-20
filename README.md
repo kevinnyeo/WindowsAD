@@ -48,7 +48,7 @@ Endpoint Client Setup: <br/>
 <br/>
 [Step 5] Creating of users in Active Directory with Powershell script or manually [Simulating employees onboarding]
 <br/>
-[Step 6] Endpoint Client step [Simulating company's desktop/laptop]
+[Step 6] Endpoint Client Setup [Simulating company's desktop/laptop]
 
 
 <h2>Program walk-through:</h2>
@@ -162,6 +162,77 @@ The DC DHCP Server will automatically assign a private IP address to clients con
 <img src="https://imgur.com/LbUQCBP.png" height="80%" width="80%" /><br/>  
 <br/>
  
+<p align="center">
+<b>[Step 5]Creating Users in Active Directory <br/>
+<br/>
+ These user accounts will be used to login to client via the network [Simulating employees accounts] <br/>
+ Users can be created one at a time manually via ADDS which can be tedious. <br/>
+ However, we can use Powershell Scripting to create multiple users at once. <br/>
+<br/>
+ The script works by reading a .txt file [eg list of employee names] and then proceeding to create user accounts in AD. 
+ For this example the script has been written to set the same password for all the users but it can also be configured
+ to allow users to set their own password when the first login. <br/>
+<br/>
+
+ Demo Video: <br/>
+ 
+ https://github.com/kevinnyeo/WindowsAD/assets/141112043/0db757ad-f71a-4bda-ac0e-eb3177af64be
+ 
+<p align="center">
+<br/>
+ 1. Open Powershell ISE > Run script <br/>
+ Script: <br/>
+<img src="https://imgur.com/4KstRdb.png" height="80%" width="80%" /> <br/>
+
+<p align="center">
+<b>[Step 6] Endpoint Client Setup [Simulating company's desktop/laptop]</b> <br/>
+<br/>
+ 1. Create client machine [Windows 10 ISO] in VirtualBox <br/>
+ 2. Ensure it is only connected to internal adapter as we are testing if our DC is setup properly.<br/>
+<img src="https://imgur.com/IdDdNeX.png" height="80%" width="80%" />
+<img src="https://imgur.com/VZlCEQe.png" height="80%" width="80%" /><br/>
+<br/>
+ 3. Check IP configurations in the command prompt [ipconfig]<br/>
+ The IPv4 address assigned is not within our DHCP scope [172.16.0.100-200] and there is no default gateway]
+<img src="https://imgur.com/opBkzju.png" height="80%" width="80%" /><br/>
+<br/> 
+ 4. Troubleshooting Domain Controller<br/>
+<br/>
+ Upon checking the DC, I realised that we forgot to add our DC IP address under DHCP server options. <br/>
+ After adding our DC IP address as the Router in DHCP server options, check our client again using [ipconfig /renew]<br/>
+<img src="https://imgur.com/7HNKysm.png" height="80%" width="80%" /><br/>
+<br/>
+  Now the client is connected to the Domain Controller<br/>
+<img src="https://imgur.com/e5k2FQD.png" height="80%" width="80%" /><br/> 
+<br/>
+ 5. Rename and add CLIENT as a member of the domain. <br/>
+ 6. Use admin account to authorise the process.
+<img src="https://imgur.com/V5r0sPK.png" height="80%" width="80%" />
+<img src="https://imgur.com/9WRS55K.png" height="80%" width="80%" />
+<img src="https://imgur.com/KI1kVPg.png" height="80%" width="80%" />
+<img src="https://imgur.com/YEOqqE7.png" height="80%" width="80%" /><br/>
+<br/>
+ 7. Check if CLIENT is linked to the network
+ In DC DHCP, we can see that CLIENT1 has been leased the 172.16.0.100 IP address<br/>
+ In DC Users and Computors, we can see that CLIENT1 is registered in the infrastructure <br/>
+<img src="https://imgur.com/XXkaeNH.png" height="80%" width="80%" />
+<img src="https://imgur.com/0eHLXVB.png" height="80%" width="80%" /><br/>
+<br/>
+ 8. Log into CLIENT1 using created user accounts<br/>
+ The Employee can now access the enterprise network <br/>
+<img src="https://imgur.com/cGgAw5y.png" height="80%" width="80%" />
+<img src="https://imgur.com/NbC7kDv.png" height="80%" width="80%" /><br/>
+
+
+
+
+
+
+
+
+
+
+
 
 </p>
 
