@@ -1,4 +1,4 @@
-<h1>Windows Active Directory Setup With Powershell</h1>
+<h1>🗔 Windows Active Directory Setup With Powershell</h1>
 
 <h2>Description:</h2>
 
@@ -206,13 +206,13 @@ The DC DHCP Server will automatically assign a private IP address to clients con
 <img src="https://imgur.com/e5k2FQD.png" height="80%" width="80%" /><br/> 
 <br/>
  5. Rename and add CLIENT as a member of the domain. <br/>
- 6. Use admin account to authorise the process.
+ 6. Use admin account to authorise the process.<br/>
 <img src="https://imgur.com/V5r0sPK.png" height="80%" width="80%" />
 <img src="https://imgur.com/9WRS55K.png" height="80%" width="80%" />
 <img src="https://imgur.com/KI1kVPg.png" height="80%" width="80%" />
 <img src="https://imgur.com/YEOqqE7.png" height="80%" width="80%" /><br/>
 <br/>
- 7. Check if CLIENT is linked to the network
+ 7. Check if CLIENT is linked to the network<br/>
  In DC DHCP, we can see that CLIENT1 has been leased the 172.16.0.100 IP address<br/>
  In DC Users and Computors, we can see that CLIENT1 is registered in the infrastructure <br/>
 <img src="https://imgur.com/XXkaeNH.png" height="80%" width="80%" />
