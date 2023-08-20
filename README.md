@@ -38,27 +38,103 @@
 
 [Step 1] Oracle VirtualBox setup and configuration<br/> 
 <br/>
-[Step 2] Domain Controller setup <br/>
- - Active Directory Domain Service [Stores devices and services on our network]
- - Remote Access Server/Network Address Translation [Eg employee accessing company network remotely]
- - DHCP [Seamless integration with AD and DNS services]
+Domain Controller Setup: <br/>
 <br/>
-[Step 3] Creating of users in Active Directory with Powershell script or manually [Simulating employees onboarding]
+[Step 2]Active Directory Domain Service [Stores devices and services on our network]<br/>
+[Step 3]Remote Access Server/Network Address Translation [Eg employee accessing company network remotely]<br/>
+[Step 4]DHCP [Seamless integration with AD and DNS services]<br/>
 <br/>
-[Step 4] Endpoint CLient step [Simulating company's desktop/laptop]
+Endpoint Client Setup: <br/>
+<br/>
+[Step 5] Creating of users in Active Directory with Powershell script or manually [Simulating employees onboarding]
+<br/>
+[Step 6] Endpoint Client step [Simulating company's desktop/laptop]
 
 
 <h2>Program walk-through:</h2>
 
 <p align="center">
-<b>Microsoft Windows Defender Antivirus</b>  <br/>
- 1. Launch Windows Security Application <br/>
- 2. Navigate to Virus and threat protection <br/>
- 3. Click on Quick scan <br/>
-<img src="https://i.imgur.com/2cgGtCu.png" height="80%" width="80%" />
-<br />
+<b>[Step 1] Oracle VirtualBox Setup</b> <br/>
+<br/>
+ 1. Create our Domain Controller machine [Server 2019] and add two adapters. <br/>
+ 2. Network adapter 1 will be the INTERNET adapter [Where the DC gets connection from the internet] <br/>
+ 3. Network adapter 2 will be our internal adapter [Where clients connect to] <br/>
+<br/>
+<img src="https://i.imgur.com/YPKJeQR.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/s80B3st.png" height="80%" width="80%" /><br/>
+<br/>
+ 4. Install Windows Server 2019 ISO onto machine
+<img src="https://i.imgur.com/DHerYBG.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/bhgANrQ.png" height="80%" width="80%" /> <br/>
+<br/>
+ 5. Configuring Ethernet Settings and IP addressing<br/>
+ Open Network settings > Change adapter options<br/>
+<img src="https://imgur.com/MgaGiK9.png" height="80%" width="80%" /> <br/>
+<br/>
+ Rename Ethernet 1 and Ethernet to differentiate between internet and internal adapter<br/>
+ To check which is which: Right click ethernet > Status > check IPv4 address <br/>
+ Our internet IP usually starts with 10.X.X.X and internal IP is in DHCP format in this case its 169.254.38.166<br/>
+ Rename to X_internal_X and _INTERNET_ for easy identification <br/>
+<img src="https://imgur.com/WsiHxZ4.png" height="80%" width="80%" />
+<img src="https://imgur.com/0U5JSA6.png" height="80%" width="80%" /> <br/> 
+<br/>
+ Now we will assign IP to our internal network that client will use <br/>
+ Right-click internal adapter > Status > Internet Protocol IPv4 > Configure <br/>
+<img src="https://imgur.com/6YqIuvE.png" height="80%" width="80%" /> <br/>  
+<br/>
+ Assign IP to internal adapter<br/>
+ IP Address: 172.16.0.1 [VirtualBox private server IP]<br/>
+ Subnet Mask: 255.255.0.0 [16 bit for network/16 bit for host] <br/>
+ Preferred DNS Server: 127.0.0.1 [Loopback IP] <br/> <img src="https://imgur.com/tJP9DcS.png" height="80%" width="80%" />
+<br/> 
+ 6. Rename DC System<br/>
+ Right-click System Settings > Rename PC (Advanced)<br/>
+<img src="https://imgur.com/hupiTEB.png" height="80%" width="80%" /> 
+<br/>
  
-
+<p align="center">
+<b>[Step 2] Active Directory Domain Server Setup<br/>
+<br/>
+ADDS is where all information of devices, users and software connected to the network will be stored at. <br/>
+ 1. Open Server Manager > Add roles and features > Install ADDS Role <br/>
+<img src="https://i.imgur.com/RGQoIQM.png" height="80%" width="80%" />
+<img src="https://imgur.com/GJhyzj9.png" height="80%" width="80%" />
+<img src="https://imgur.com/OeRwBRt.png" height="80%" width="80%" /> <br/>
+<br/>
+ 2. Add domain [mydomain.com] into adds <br/>
+ Click promote this server to domain controller > Add new forest [mydomain.com] > Install <br/>
+<img src="https://imgur.com/Ds4nmZI.png" height="80%" width="80%" />
+<img src="https://imgur.com/6tVtHRr.png" height="80%" width="80%" />
+<img src="https://imgur.com/IQITVWI.png" height="80%" width="80%" /> <br/>
+<br/>
+ 3. Reboot Machine [Domain name is now present in login screen]<br/>
+<img src="https://imgur.com/Vh7hrka.png" height="80%" width="80%" /> <br/>
+<br/>
+ 4. Creating Domain Administrator User Account [This account will be used to troubleshoot client endpoint]<br/>
+ Start Menu > Windows Administrator Tools > Active Directory Users And Computers <br/>
+<img src="https://imgur.com/DUlatg5.png" height="80%" width="80%" /> <br/>
+<br/>
+ 5. Create New OU object under domain > Enter user creation details > Assign 'Domain Admin' role <br/>
+<img src="https://imgur.com/Cz9Mvg7.png" height="80%" width="80%" />
+<img src="https://imgur.com/mvnX8WH.png" height="80%" width="80%" />
+<img src="https://imgur.com/OpwSYZj.png" height="80%" width="80%" />
+<img src="https://imgur.com/F8GPlRN.png" height="80%" width="80%" /> <br/> 
+ 
+<p align="center">
+<b>[Step 3] Setting up RAS and NAT<br/>
+Remote Access Server will allow endpoint clients to access the company network remotely. <br/>
+Network Adress Translation will allow all private IP of client assigned by DHCP to be masked by our DC IP [172.16.0.1]<br/>
+<br/>
+ 1. Install Remote Access Role in Server Manager <br/>
+ Open Server Manager > Install RAS Role > Enable VPN(RAS) and Routing <br/>
+<img src="https://imgur.com/ar9JPS5.png" height="80%" width="80%" />
+<img src="https://imgur.com/XBqZObY.png" height="80%" width="80%" /> <br/>
+<br/> 
+ 2. Enable Network Address Translation [NAT]<br/>
+ Go to tools > Routing and Remote Access > Right click DC Server > Click NAT > Select INTERNET Adapter <br/>
+<img src="https://imgur.com/gVbdI5O.png" height="80%" width="80%" />
+<img src="https://imgur.com/ntrHjOh.png" height="80%" width="80%" />
+<img src="https://imgur.com/bb6kKGI.png" height="80%" width="80%" /> <br/>
 
 </p>
 
