@@ -42,7 +42,7 @@ Domain Controller Setup: <br/>
 <br/>
 [Step 2]Active Directory Domain Service [Stores devices and services on our network]<br/>
 [Step 3]Remote Access Server/Network Address Translation [Eg employee accessing company network remotely]<br/>
-[Step 4]DHCP [Seamless integration with AD and DNS services]<br/>
+[Step 4]DHCP Server Setup [Seamless integration with AD and DNS services]<br/>
 <br/>
 Endpoint Client Setup: <br/>
 <br/>
@@ -135,6 +135,33 @@ Network Adress Translation will allow all private IP of client assigned by DHCP 
 <img src="https://imgur.com/gVbdI5O.png" height="80%" width="80%" />
 <img src="https://imgur.com/ntrHjOh.png" height="80%" width="80%" />
 <img src="https://imgur.com/bb6kKGI.png" height="80%" width="80%" /> <br/>
+
+<p align="center">
+<b>[Step 4]DHCP Server Setup<br/>
+The DC DHCP Server will automatically assign a private IP address to clients connecting to the network. <br/>
+<br/>
+ 1. Install DHCP Role in Server Manager <br/>
+ Open Server Manager > Install DHCP Server <br/>
+<img src="https://imgur.com/MJVPPKD.png" height="80%" width="80%" /> <br/>
+<br/>
+ 2. Adding in DHCP Scope<br/>
+ Go to tools > DHCP > Right click DC Server > Expand DC.domain > Right-click IPv4 > New Scope <br/>
+<img src="https://imgur.com/VMgTQI1.png" height="80%" width="80%" />
+<img src="https://imgur.com/Dy4SXgH.png" height="80%" width="80%" /><br/>
+<br/>
+ 3. Configure DHCP Scope<br/>
+ Add in DHCP Scope range 172.16.0.100-200 [This will be range of private IP address for lease]<br/>
+ Subnet mask: 255:255:255:0 <br/>
+ Select private IP lease duration [This will determine how long the private IP will stay assigned to the client device<br/>
+<img src="https://imgur.com/p5Qhs1D.png" height="80%" width="80%" />
+<img src="https://imgur.com/xkm8okn.png" height="80%" width="80%" /><br/> 
+<br/>
+ 4. Add Router IP and DNS Server [172.16.0.1] <br/>
+ This is an important step to ensure clients are able to access the internet<br/>
+<img src="https://imgur.com/BZ5Ijcq.png" height="80%" width="80%" />
+<img src="https://imgur.com/LbUQCBP.png" height="80%" width="80%" /><br/>  
+<br/>
+ 
 
 </p>
 
