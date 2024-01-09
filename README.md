@@ -19,7 +19,7 @@
 - <b>Windows Server 2019 ISO File [Domain Controller]</b>
 - <b>Windows 10 ISO File [Client Workstation]</b>
 - <b>Powershell</b>
-- <b>Powershell Automation Script [Bulk user creation] credits to Josh Madakor</b> 
+- <b>Powershell Automation Script [Bulk user creation] </b> 
 
 <h2>Environments Used: </h2>
 
